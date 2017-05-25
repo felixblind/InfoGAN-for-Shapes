@@ -1,0 +1,4 @@
+images
+.ipython-log.py
+*.pyc
+__pycache__
