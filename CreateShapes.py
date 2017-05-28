@@ -77,12 +77,15 @@ def createTriangles(imageSize, margin, color, borderWidth):
     i = 0
     while i < 200000:
 
-        y1Coordinate = np.random.randint(margin, imageSize[0] - margin)
+        # Note that every coordinate is bound by the x coordinate of the first
+        # point and the y variable of the second point.
+        # Draw a diagram.
         x1Coordinate = np.random.randint(margin, imageSize[1] - margin)
         y2Coordinate = np.random.randint(margin, imageSize[0] - margin)
-        x2Coordinate = np.random.randint(margin, imageSize[1] - margin)
-        y3Coordinate = np.random.randint(margin, imageSize[0] - margin)
-        x3Coordinate = np.random.randint(margin, imageSize[1] - margin)
+        x2Coordinate = np.random.randint(x1Coordinate, imageSize[1] - margin)
+        y1Coordinate = np.random.randint(y2Coordinate, imageSize[0] - margin)
+        x3Coordinate = np.random.randint(x1Coordinate, imageSize[1] - margin)
+        y3Coordinate = np.random.randint(y2Coordinate, imageSize[0] - margin)
 
         # if three x- or y-coordinates are on a line, the 
         # triangle would be empty.
