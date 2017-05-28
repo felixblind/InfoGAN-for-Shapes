@@ -75,6 +75,8 @@ def createTriangles(imageSize, margin, color, borderWidth):
                             # triangle would be empty.
 
     i = 0
+    # there are more then 40 million possible triangles. We choose randomly
+    # 200000 of them:
     while i < 200000:
 
         # Note that every coordinate is bound by the x coordinate of the first
