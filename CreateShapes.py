@@ -3,11 +3,15 @@ import sys
 import os
 import numpy as np
 from Shapes import Ellipse, Rectangle, Triangle
-# from Rectangle import Rectangle
-# from Ellipse import Ellipse
-# from Triangle import Triangle
 
-def createEllipses(imageSize, margin, color, borderWidth):
+def createArea(margin, imageSize, minWidth, minHeight):
+    for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
+        for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
+            for height in range(minHeight + margin, imageSize[0] - yCoordinate + 1):
+                for width in range(minWidth + margin, imageSize[1] - xCoordinate + 1):
+                    return [xCoordinate, yCoordinate, width, height]
+
+def createEllipses(imageSize, margin, minWidth, minHeight, color, borderWidth):
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'ellipses')):
@@ -17,13 +21,14 @@ def createEllipses(imageSize, margin, color, borderWidth):
     # The same is true for the width of the image and the width of the
     # ellipse.
     # The addition of 1 at the end is because of the range function.
-    for height in range(margin, imageSize[0] - 2 * margin + 1):
-        for width in range(margin, imageSize[1] - 2 * margin + 1):
-            for yCoordinate in range(1 + margin, imageSize[0] - height + 1):
-                for xCoordinate in range(1 + margin, imageSize[1] - width + 1):
-                    area = [xCoordinate, yCoordinate, width, height]
-                    ellipse = Ellipse(area, color, borderWidth)
-                    ellipse.draw(imageSize)
+    # for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
+    #     for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
+    #         for height in range(1 + margin, imageSize[0] - yCoordinate + 1):
+    #             for width in range(1 + margin, imageSize[1] - xCoordinate + 1):
+    #                 area = [xCoordinate, yCoordinate, width, height]
+        area = createArea(margin, imageSize, minWidth, minHeight)
+        ellipse = Ellipse(area, color, borderWidth)
+        ellipse.draw(imageSize)
 
 def createRectangles(imageSize, margin, color, borderWidth):
     if not os.path.exists('images'):
@@ -35,10 +40,10 @@ def createRectangles(imageSize, margin, color, borderWidth):
     # The same is true for the width of the image and the width of the
     # rectangle.
     # The addition of 1 at the end is because of the range function.
-    for height in range(margin, imageSize[0] - 2 * margin + 1):
-        for width in range(margin, imageSize[1] - 2 * margin + 1):
-            for yCoordinate in range(1 + margin, imageSize[0] - height + 1):
-                for xCoordinate in range(1 + margin, imageSize[1] - width + 1):
+    for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
+        for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
+            for height in range(1 + margin, imageSize[0] - yCoordinate + 1):
+                for width in range(1 + margin, imageSize[1] - xCoordinate + 1):
                     area = [xCoordinate, yCoordinate, width, height]
                     rectangle = Rectangle(area, color, borderWidth)
                     rectangle.draw(imageSize)
@@ -81,6 +86,8 @@ def createTriangles(imageSize, margin, color, borderWidth):
 
         # Note that every coordinate is bound by the x coordinate of the first
         # point and the y variable of the second point.
+        # Every third corner point is further right than the first point and
+        # further down as the second.
         # Draw a diagram.
         x1Coordinate = np.random.randint(margin, imageSize[1] - margin)
         y2Coordinate = np.random.randint(margin, imageSize[0] - margin)
@@ -99,7 +106,7 @@ def createTriangles(imageSize, margin, color, borderWidth):
             position3 = [x3Coordinate, y3Coordinate]
             pointlist = [position1, position2, position3]
             if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
-                str(pointlist) + '.jpeg')):
+                str(pointlist) + '.png')):
 
                     triangle = Triangle(pointlist,
                         color,borderWidth)
@@ -110,12 +117,14 @@ def createTriangles(imageSize, margin, color, borderWidth):
 def __main__():
     imageSize = [28,28]
     margin = 1
+    minWidth = 3
+    minHeight = 3
     borderWidth = sys.argv[1]
     black = [0,0,0]
 
-    createEllipses(imageSize, margin, black, 0)
-    createRectangles(imageSize, margin, black, 0)
-    createTriangles(imageSize, margin, black, 0)
+    createEllipses(imageSize, margin, minWidth, minHeight, black, 0)
+    # createRectangles(imageSize, margin, black, 0)
+    # createTriangles(imageSize, margin, black, 0)
 
     pygame.quit()
 

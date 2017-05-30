@@ -1,0 +1,5 @@
+[console_scripts]
+prettytensor_model_baby_names = prettytensor.tutorial.baby_names:main
+prettytensor_model_mnist = prettytensor.tutorial.mnist:main
+prettytensor_model_shakespeare = prettytensor.tutorial.shakespeare:main
+

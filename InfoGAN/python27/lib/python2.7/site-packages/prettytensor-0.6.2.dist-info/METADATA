@@ -1,0 +1,26 @@
+Metadata-Version: 2.0
+Name: prettytensor
+Version: 0.6.2
+Summary: Pretty Tensor makes learning beautiful
+Home-page: https://github.com/google/prettytensor
+Author: Eider Moore
+Author-email: opensource@google.com
+License: Apache 2.0
+Keywords: tensorflow tensor machine learning
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Libraries
+Requires-Dist: enum34 (>=1.0.0)
+Requires-Dist: six (>=1.10.0)
+Requires-Dist: tensorflow (>=0.9.0rc0)
+
+UNKNOWN
+
+
