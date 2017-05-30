@@ -64,7 +64,7 @@ class Circle:
         # bigger than the size of the smaller side of the image without the
         # margins on both sites.
         smallerSide = min(imageSize[0], imageSize[1])
-        self.radius = np.random.randint(1,  int(smallerSide - 2 * margin) / 2))
+        self.radius = np.random.randint(1,  int(smallerSide - 2 * margin) / 2)
         # The y-Coordinate of the middle point should be at least as far from
         # each border as the radius + margin
         yCoordinate = np.random.randint(margin + radius, imageSize[0] - margin
