@@ -2,3 +2,4 @@ images
 .ipython-log.py
 *.pyc
 __pycache__
+InfoGAN/python27

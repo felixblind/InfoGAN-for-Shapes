@@ -2,6 +2,7 @@ MNIST
 *.pyc
 .idea
 imgs
-logs
+python27
 ckt
 .ipynb_checkpoints
+
