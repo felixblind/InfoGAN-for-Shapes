@@ -5,11 +5,13 @@ import numpy as np
 from Shapes import Ellipse, Rectangle, Triangle
 
 def createArea(margin, imageSize, minWidth, minHeight):
+    areas = []
     for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
         for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
             for height in range(minHeight + margin, imageSize[0] - yCoordinate + 1):
                 for width in range(minWidth + margin, imageSize[1] - xCoordinate + 1):
-                    return [xCoordinate, yCoordinate, width, height]
+                    areas.append([xCoordinate, yCoordinate, width, height])
+    return areas
 
 def createEllipses(imageSize, margin, minWidth, minHeight, color, borderWidth):
     if not os.path.exists('images'):
@@ -26,9 +28,11 @@ def createEllipses(imageSize, margin, minWidth, minHeight, color, borderWidth):
     #         for height in range(1 + margin, imageSize[0] - yCoordinate + 1):
     #             for width in range(1 + margin, imageSize[1] - xCoordinate + 1):
     #                 area = [xCoordinate, yCoordinate, width, height]
-        area = createArea(margin, imageSize, minWidth, minHeight)
+    areas = createArea(margin, imageSize, minWidth, minHeight)
+    for area in areas:
         ellipse = Ellipse(area, color, borderWidth)
         ellipse.draw(imageSize)
+        print('ellipe. area = ', area)
 
 def createRectangles(imageSize, margin, color, borderWidth):
     if not os.path.exists('images'):
@@ -40,13 +44,16 @@ def createRectangles(imageSize, margin, color, borderWidth):
     # The same is true for the width of the image and the width of the
     # rectangle.
     # The addition of 1 at the end is because of the range function.
-    for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
-        for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
-            for height in range(1 + margin, imageSize[0] - yCoordinate + 1):
-                for width in range(1 + margin, imageSize[1] - xCoordinate + 1):
-                    area = [xCoordinate, yCoordinate, width, height]
-                    rectangle = Rectangle(area, color, borderWidth)
-                    rectangle.draw(imageSize)
+    # for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
+    #     for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
+    #         for height in range(1 + margin, imageSize[0] - yCoordinate + 1):
+    #             for width in range(1 + margin, imageSize[1] - xCoordinate + 1):
+    #                 area = [xCoordinate, yCoordinate, width, height]
+    areas = createArea(margin, imageSize, minWidth, minHeight)
+    for area in areas:
+        rectangle = Rectangle(area, color, borderWidth)
+        rectangle.draw(imageSize)
+        print('rectangle. area = ', area)
 
 def createTriangles(imageSize, margin, color, borderWidth):
     if not os.path.exists('images'):
@@ -112,6 +119,7 @@ def createTriangles(imageSize, margin, color, borderWidth):
                         color,borderWidth)
                     triangle.draw(imageSize)
                     i = i + 1
+                    print('triangle. area = ', pointlist)
 
 
 def __main__():
