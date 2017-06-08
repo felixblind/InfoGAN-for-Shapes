@@ -3,3 +3,5 @@ images
 *.pyc
 __pycache__
 InfoGAN/python27
+test*.py
+
