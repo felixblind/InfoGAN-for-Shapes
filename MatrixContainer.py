@@ -1,6 +1,7 @@
 import idx2numpy
 import os
 import numpy as np
+import pickle
 
 class Container:
     def __init__(self):
@@ -39,9 +40,17 @@ class Container:
         for _ in range(int((sampleSize * .9) / 3)):
             trainMatrixAndLabelsSample.append([0,
                 self.ellipses[np.random.randint(len(self.ellipses))]])
+            # trainMatrixAndLabelsSample.append([1,
+            #     self.rectangles[np.random.randint(len(self.rectangles))]])
+            # trainMatrixAndLabelsSample.append([2,
+            #     self.triangles[np.random.randint(len(self.triangles))]])
         for _ in range(int((sampleSize * .1) / 3)):
             testMatrixAndLabelsSample.append([0,
                 self.ellipses[np.random.randint(len(self.ellipses))]])
+            # testMatrixAndLabelsSample.append([1,
+            #     self.rectangles[np.random.randint(len(self.rectangles))]])
+            # testMatrixAndLabelsSample.append([2,
+            #     self.triangles[np.random.randint(len(self.triangles))]])
 
         # the lists have to be shuffled
 
@@ -52,7 +61,12 @@ class Container:
             testMatrixSample.append(matrixLabelTupel[1])
             testLabelsSample.append(matrixLabelTupel[0])
 
-        idx2numpy.convert_to_file(trainImagePath, np.array(trainMatrixSample))
-        idx2numpy.convert_to_file(trainLabelsPath, np.array(trainLabelsSample))
-        idx2numpy.convert_to_file(testImagePath, np.array(trainMatrixSample))
-        idx2numpy.convert_to_file(testLabelsPath, np.array(testLabelsSample))
+        pickle.dump([trainMatrixSample, trainLabelsSample, testMatrixSample,
+            testLabelsSample], open('images.pkl', 'wb'), protocol=2)
+
+
+
+        # idx2numpy.convert_to_file(trainImagePath, np.array(trainMatrixSample))
+        # idx2numpy.convert_to_file(trainLabelsPath, np.array(trainLabelsSample))
+        # idx2numpy.convert_to_file(testImagePath, np.array(trainMatrixSample))
+        # idx2numpy.convert_to_file(testLabelsPath, np.array(testLabelsSample))
