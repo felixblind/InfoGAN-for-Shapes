@@ -4,7 +4,7 @@ from infogan.misc.distributions import Uniform, Categorical, Gaussian, MeanBerno
 
 import tensorflow as tf
 import os
-from infogan.misc.datasets import Dataset
+from infogan.misc.datasets import ShapeDataset
 from infogan.models.regularized_gan import RegularizedGAN
 from infogan.algos.infogan_trainer import InfoGANTrainer
 from infogan.misc.utils import mkdir_p
@@ -21,9 +21,9 @@ if __name__ == "__main__":
 
     root_log_dir = "logs/mnist"
     root_checkpoint_dir = "ckt/mnist"
-    batch_size = 1
-    updates_per_epoch = 1
-    max_epoch = 1
+    batch_size = 128
+    updates_per_epoch = 100
+    max_epoch = 50
 
     exp_name = "shape_%s" % timestamp
 
@@ -33,9 +33,14 @@ if __name__ == "__main__":
     mkdir_p(log_dir)
     mkdir_p(checkpoint_dir)
 
-    with open('images.pkl', 'rb') as f:
-        train_set, train_labels, test_set, test_labels = pickle.load(f)
-    dataset = Dataset(train_set, train_labels)
+    liste = pickle.load(open('images.pkl', 'rb'))
+
+    trainMatrixSample = np.array(liste[0])
+    trainLabelsSample = np.array(liste[1])
+    testMatrixSample = np.array(liste[2])
+    testLabelsSample = np.array(liste[3])
+
+    dataset = ShapeDataset(trainMatrixSample, trainLabelsSample)
 
 
     latent_spec = [

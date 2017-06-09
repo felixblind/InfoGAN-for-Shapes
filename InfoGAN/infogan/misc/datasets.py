@@ -13,8 +13,7 @@ class Dataset(object):
         self._num_examples = images.shape[0]
         # shuffle on first run
         self._index_in_epoch = self._num_examples
-        self.image_dim = 28 * 28
-        self.image_shape = (28, 28, 1)
+
 
     @property
     def images(self):
@@ -90,12 +89,7 @@ class MnistDataset(object):
         return data
 
 class ShapeDataset(object):
-    def __init__(self):
-        data_directory = "SHAPE"
-        if not os.path.exists(data_directory):
-            os.makedirs(data_directory)
-        dataset = mnist.input_data.read_data_sets(data_directory)
-
+    def __init__(self, images, labels):
 
         self._images = images.reshape(images.shape[0], -1)
         self._labels = labels
@@ -144,3 +138,6 @@ class ShapeDataset(object):
             return self._images[start:end], None
         else:
             return self._images[start:end], self._labels[start:end]
+
+    def inverse_transform(self, data):
+        return data
