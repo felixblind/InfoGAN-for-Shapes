@@ -62,7 +62,7 @@ class Container:
             testLabelsSample.append(matrixLabelTupel[0])
 
         pickle.dump([trainMatrixSample, trainLabelsSample, testMatrixSample,
-            testLabelsSample], open('images.pkl', 'wb'), protocol=2)
+            testLabelsSample], open('InfoGAN/images.pkl', 'wb'), protocol=2)
 
 
 
