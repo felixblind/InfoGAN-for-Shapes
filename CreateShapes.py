@@ -5,6 +5,7 @@ import numpy as np
 from Shapes import Ellipse, Rectangle, Triangle
 from MatrixContainer import Container
 
+
 def createArea(margin, imageSize):
     areas = []
     # height or width 0 would lead to no shape. The ellipse should not be
@@ -22,27 +23,33 @@ def createArea(margin, imageSize):
     return areas
 
 def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
+    global count
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'ellipses')):
         os.makedirs(os.path.join('images', 'ellipses'))
     areas = createArea(margin, imageSize)
     for area in areas:
-        ellipse = Ellipse(area, color, borderWidth, matrixContainer)
+        print("I draw an elipse")
+        ellipse = Ellipse(area, color, borderWidth, matrixContainer, count)
+        count += 1
         ellipse.draw(imageSize)
 
 def createRectangles(imageSize, margin, color,
         borderWidth, matrixContainer):
+    global count
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'rectangles')):
         os.makedirs(os.path.join('images', 'rectangles'))
-    areas = createArea(margin, imageSize, minWidth, minHeight)
+    areas = createArea(margin, imageSize)
     for area in areas:
-        rectangle = Rectangle(area, color, borderWidth, matrixContainer)
+        print("I draw a rectangle")
+        rectangle = Rectangle(area, color, borderWidth, matrixContainer, count)
+        count += 1
         rectangle.draw(imageSize)
 
-def createTriangles(imageSize, margin, color, borderWidth):
+def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'triangles')):
@@ -76,6 +83,7 @@ def createTriangles(imageSize, margin, color, borderWidth):
     # there are more then 40 million possible triangles. We choose randomly
     # 200000 of them:
     for _ in range(200000):
+        print("I draw a trinangle")
         # Note that every coordinate is bound by the x coordinate of the first
         # point and the y variable of the second point.
         # Every third corner point is further right than the first point and
@@ -101,7 +109,7 @@ def createTriangles(imageSize, margin, color, borderWidth):
                 str(pointlist) + '.png')):
 
                     triangle = Triangle(pointlist,
-                        color,borderWidth)
+                        color,borderWidth, matrixContainer)
                     triangle.draw(imageSize)
 
 def __main__():
@@ -111,12 +119,13 @@ def __main__():
     minHeight = 3
     borderWidth = sys.argv[1]
     black = [0,0,0]
-
+    global count
+    count = 0
     matrixContainer = Container()
+
     createEllipses(imageSize, margin, black, 0, matrixContainer)
-    # createRectangles(imageSize, margin, minWidth, minHeight, black, 0,
-    #         matrixContainer)
-    # createTriangles(imageSize, margin, black, 0, matrixContainer)
+    createRectangles(imageSize, margin, black, 0, matrixContainer)
+    createTriangles(imageSize, margin, black, 0, matrixContainer)
     idxPath = os.path.join('MNIST')
     if not os.path.exists(idxPath):
         os.makedirs(idxPath)
