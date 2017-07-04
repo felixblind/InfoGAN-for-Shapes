@@ -23,7 +23,7 @@ if __name__ == "__main__":
     root_checkpoint_dir = "ckt/shape"
     batch_size = 128
     updates_per_epoch = 100
-    max_epoch = 5
+    max_epoch = 50
 
     exp_name = "shape_%s" % timestamp
 
@@ -45,7 +45,6 @@ if __name__ == "__main__":
 
     latent_spec = [
         (Uniform(62), False),
-        (Categorical(3), True),
         (Uniform(1, fix_std=True), True),
         (Uniform(1, fix_std=True), True),
     ]
