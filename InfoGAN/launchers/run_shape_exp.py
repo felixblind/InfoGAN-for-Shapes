@@ -19,11 +19,11 @@ if __name__ == "__main__":
     now = datetime.datetime.now(dateutil.tz.tzlocal())
     timestamp = now.strftime('%Y_%m_%d_%H_%M_%S')
 
-    root_log_dir = "logs/mnist"
-    root_checkpoint_dir = "ckt/mnist"
+    root_log_dir = "logs/shape"
+    root_checkpoint_dir = "ckt/shape"
     batch_size = 128
     updates_per_epoch = 100
-    max_epoch = 50
+    max_epoch = 5
 
     exp_name = "shape_%s" % timestamp
 
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     latent_spec = [
         (Uniform(62), False),
-        (Categorical(10), True),
+        (Categorical(3), True),
         (Uniform(1, fix_std=True), True),
         (Uniform(1, fix_std=True), True),
     ]
