@@ -23,7 +23,7 @@ def checkMatrix(matrix, imageSize):
     # = 9
     matrixok = False
     # check if big enough
-    if np.sum(matrix) < ((imageSize[0] * imageSize[1] * 255) - ((imageSize[0] * imageSize[1]) / 80)*255):
+    if np.sum(matrix) < ((imageSize[0] * imageSize[1] * 255) - ((imageSize[0] * imageSize[1]) / 80)*255) and np.sum(matrix) > 0:
         # check if ratio of height to length ok, to rule out super lengthy objects
         shaperow = []
         shapecol = []
@@ -55,8 +55,8 @@ def rotate(matrix, angle, imageSize):
                 shaperow.append(i)
                 shapecol.append(j)
                 shape.append([i,j,matrix[i,j]])
-    middlepointrow = max(shaperow) - min(shaperow)
-    middlepointcol = max(shapecol) - min(shapecol)
+    middlepointrow = min(shaperow) + ((max(shaperow) - min(shaperow))/2.)
+    middlepointcol = min(shapecol) + ((max(shapecol) - min(shapecol))/2.)
 
     s = np.sin(angle);
     c = np.cos(angle);
@@ -99,18 +99,28 @@ class Ellipse:
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
         if checkMatrix(imageMatrix, imageSize):
-            print("I am right!")
-            #if self.count % 3 == 1:
-            #    imageMatrix = rotate(imageMatrix, 15, imageSize)
-            #elif self.count % 3 == 2:
-            #    imageMatrix = rotate(imageMatrix, 30, imageSize)
-            #else:
-            #    print("I don't rotate")
-            self.matrixContainer.put(rotate(imageMatrix, 15, imageSize), 'ellipse')
-            self.matrixContainer.put(rotate(imageMatrix, 30, imageSize), 'ellipse')
+
             self.matrixContainer.put(imageMatrix, 'ellipse')
-        else:
-            print("I am to small")
+
+            rotate15 = rotate(imageMatrix, 15, imageSize)
+            if checkMatrix(rotate15, imageSize):
+                self.matrixContainer.put(rotate15, 'ellipse')
+
+            rotate30 = rotate(imageMatrix, 30, imageSize)
+            if checkMatrix(rotate30, imageSize):
+                self.matrixContainer.put(rotate30, 'ellipse')
+
+            rotate45 = rotate(imageMatrix, 45, imageSize)
+            if checkMatrix(rotate45, imageSize):
+                self.matrixContainer.put(rotate45, 'ellipse')
+
+            rotate60 = rotate(imageMatrix, 60, imageSize)
+            if checkMatrix(rotate60, imageSize):
+                self.matrixContainer.put(rotate60, 'ellipse')
+
+            rotate75 = rotate(imageMatrix, 75, imageSize)
+            if checkMatrix(rotate75, imageSize):
+                self.matrixContainer.put(rotate75, 'ellipse')
 
 class Triangle:
 
@@ -129,10 +139,9 @@ class Triangle:
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
         if checkMatrix(imageMatrix, imageSize):
-            print("I am right!")
+
             self.matrixContainer.put(imageMatrix, 'triangle')
-        else:
-            print("I am to small")
+
             
 
 class Rectangle:
@@ -153,18 +162,30 @@ class Rectangle:
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
         if checkMatrix(imageMatrix, imageSize):
-            print("I am right!")
-            #if self.count % 3 == 1:
-            #    imageMatrix = rotate(imageMatrix, 15, imageSize)
-            #elif self.count % 3 == 2:
-            #    imageMatrix = rotate(imageMatrix, 30, imageSize)
-            #else:
-            #    print("I don't rotate")
-            self.matrixContainer.put(rotate(imageMatrix, 15, imageSize), 'ellipse')
-            self.matrixContainer.put(rotate(imageMatrix, 30, imageSize), 'ellipse')
+
             self.matrixContainer.put(imageMatrix, 'rectangle')
-        else:
-            print("I am to small")
+
+            rotate15 = rotate(imageMatrix, 15, imageSize)
+            if checkMatrix(rotate15, imageSize):
+                self.matrixContainer.put(rotate15, 'rectangle')
+
+            rotate30 = rotate(imageMatrix, 30, imageSize)
+            if checkMatrix(rotate30, imageSize):
+                self.matrixContainer.put(rotate30, 'rectangle')
+
+            rotate45 = rotate(imageMatrix, 45, imageSize)
+            if checkMatrix(rotate45, imageSize):
+                self.matrixContainer.put(rotate45, 'rectangle')
+
+            rotate60 = rotate(imageMatrix, 60, imageSize)
+            if checkMatrix(rotate60, imageSize):
+                self.matrixContainer.put(rotate60, 'rectangle')
+
+            rotate75 = rotate(imageMatrix, 75, imageSize)
+            if checkMatrix(rotate75, imageSize):
+                self.matrixContainer.put(rotate75, 'rectangle')
+            
+
 
 # class Circle:
 
