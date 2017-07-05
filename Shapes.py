@@ -100,12 +100,14 @@ class Ellipse:
         imageMatrix = getMatrix(self.imageName)
         if checkMatrix(imageMatrix, imageSize):
             print("I am right!")
-            if self.count % 3 == 1:
-                imageMatrix = rotate(imageMatrix, 15, imageSize)
-            elif self.count % 3 == 2:
-                imageMatrix = rotate(imageMatrix, 30, imageSize)
-            else:
-                print("I don't rotate")
+            #if self.count % 3 == 1:
+            #    imageMatrix = rotate(imageMatrix, 15, imageSize)
+            #elif self.count % 3 == 2:
+            #    imageMatrix = rotate(imageMatrix, 30, imageSize)
+            #else:
+            #    print("I don't rotate")
+            self.matrixContainer.put(rotate(imageMatrix, 15, imageSize), 'ellipse')
+            self.matrixContainer.put(rotate(imageMatrix, 30, imageSize), 'ellipse')
             self.matrixContainer.put(imageMatrix, 'ellipse')
         else:
             print("I am to small")
@@ -152,12 +154,14 @@ class Rectangle:
         imageMatrix = getMatrix(self.imageName)
         if checkMatrix(imageMatrix, imageSize):
             print("I am right!")
-            if self.count % 3 == 1:
-                imageMatrix = rotate(imageMatrix, 15, imageSize)
-            elif self.count % 3 == 2:
-                imageMatrix = rotate(imageMatrix, 30, imageSize)
-            else:
-                print("I don't rotate")
+            #if self.count % 3 == 1:
+            #    imageMatrix = rotate(imageMatrix, 15, imageSize)
+            #elif self.count % 3 == 2:
+            #    imageMatrix = rotate(imageMatrix, 30, imageSize)
+            #else:
+            #    print("I don't rotate")
+            self.matrixContainer.put(rotate(imageMatrix, 15, imageSize), 'ellipse')
+            self.matrixContainer.put(rotate(imageMatrix, 30, imageSize), 'ellipse')
             self.matrixContainer.put(imageMatrix, 'rectangle')
         else:
             print("I am to small")
