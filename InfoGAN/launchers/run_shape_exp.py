@@ -1,5 +1,6 @@
 from __future__ import print_function
 from __future__ import absolute_import
+import sys; sys.path.append('')
 from infogan.misc.distributions import Uniform, Categorical, Gaussian, MeanBernoulli
 
 import tensorflow as tf
@@ -19,8 +20,8 @@ if __name__ == "__main__":
     now = datetime.datetime.now(dateutil.tz.tzlocal())
     timestamp = now.strftime('%Y_%m_%d_%H_%M_%S')
 
-    root_log_dir = "logs/mnist"
-    root_checkpoint_dir = "ckt/mnist"
+    root_log_dir = "logs/shape"
+    root_checkpoint_dir = "ckt/shape"
     batch_size = 128
     updates_per_epoch = 100
     max_epoch = 50
