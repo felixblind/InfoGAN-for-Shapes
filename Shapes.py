@@ -77,12 +77,20 @@ def rotate(matrix, angle, imageSize):
         xnew = point[0] * c - (point[1] * s);
         ynew = point[0] * s + (point[1] * c);
 
-        #translate point back:
-        point[0] = int(xnew + middlepointrow);
-        point[1] = int(ynew + middlepointcol);
+        #translate point back: (The 0.5 is to round the number and not only cut the decimals off)
+        x1 = int(xnew + middlepointrow - 0.5);
+        y1 = int(ynew + middlepointcol - 0.5);
+        x2 = int(xnew + middlepointrow + 0.5);
+        y2 = int(ynew + middlepointcol + 0.5);
 
-        if point[0] < imageSize[0] and point[0] >= 0 and point[1] < imageSize[1] and point[1] >= 0:
-            rotatetmatrix[point[0],point[1]] = point[2]
+        if x1 < imageSize[0] and x1 >= 0 and y1 < imageSize[1] and y1 >= 0 :
+            rotatetmatrix[x1,y1] = point[2]
+        if x2 < imageSize[0] and x2 >= 0 and y2 < imageSize[1] and y2 >= 0:
+            rotatetmatrix[x2,y2] = point[2]
+        if x2 < imageSize[0] and x2 >= 0 and y1 < imageSize[1] and y1 >= 0 :
+            rotatetmatrix[x2,y1] = point[2]
+        if x1 < imageSize[0] and x1 >= 0 and y2 < imageSize[1] and y2 >= 0:
+            rotatetmatrix[x1,y2] = point[2]
 
     return rotatetmatrix;
 

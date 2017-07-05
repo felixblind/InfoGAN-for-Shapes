@@ -41,8 +41,6 @@ class Container:
         print(len(self.rectangles))
         print(len(self.triangles))
 
-        print(self.ellipses[0], self.rectangles[0], self.triangles[0])
-
 
         for _ in range(int((sampleSize * .9) / 3)):
             trainMatrixAndLabelsSample.append([0,
