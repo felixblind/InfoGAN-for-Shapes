@@ -41,6 +41,9 @@ class Container:
         print(len(self.rectangles))
         print(len(self.triangles))
 
+        print(self.ellipses[0], self.rectangles[0], self.triangles[0])
+
+
         for _ in range(int((sampleSize * .9) / 3)):
             trainMatrixAndLabelsSample.append([0,
                 self.ellipses[np.random.randint(len(self.ellipses))]])
@@ -55,6 +58,7 @@ class Container:
                 self.rectangles[np.random.randint(len(self.rectangles))]])
             testMatrixAndLabelsSample.append([2,
                 self.triangles[np.random.randint(len(self.triangles))]])
+
 
         # the lists have to be shuffled
 

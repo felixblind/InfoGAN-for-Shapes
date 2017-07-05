@@ -15,21 +15,27 @@ def subMatrix(matrix):
 def getMatrix(imageName):
 
     imageMatrix = misc.imread(imageName, flatten=True)
+   # imageMatrix = misc.imread(imageName)
+    #imageMatrix = (subMatrix(imageMatrix[:,:,0])/3 +
+     #       subMatrix(imageMatrix[:,:,1])/3 +
+      #      subMatrix(imageMatrix[:,:,2])/3)
+    #print(imageMatrix)
+    matrix = subMatrix(imageMatrix) % 256
 
-    return imageMatrix
+    return matrix
 
 def checkMatrix(matrix, imageSize):
     # for a 28x28 image we want shapes which are bigger than 9 pixels. 28x28/80
     # = 9
     matrixok = False
     # check if big enough
-    if np.sum(matrix) < ((imageSize[0] * imageSize[1] * 255) - ((imageSize[0] * imageSize[1]) / 80)*255) and np.sum(matrix) > 0:
+    if np.sum(matrix) > ((imageSize[0] * imageSize[1]) / 80) and np.sum(matrix) < (imageSize[0] * imageSize[1]):
         # check if ratio of height to length ok, to rule out super lengthy objects
         shaperow = []
         shapecol = []
         for i in range(imageSize[0]):
             for j in range(imageSize[1]):
-                if matrix[i,j] != 255:
+                if matrix[i,j] != 0:
                     shaperow.append(i)
                     shapecol.append(j)
         length = max(shaperow) - min(shaperow)
@@ -43,7 +49,6 @@ def checkMatrix(matrix, imageSize):
 def rotate(matrix, angle, imageSize):
 
     # get middle point of matrix around which we want to rotate the matrix
-    print("I rotate right now")
 
     shaperow = []
     shapecol = []
@@ -51,7 +56,7 @@ def rotate(matrix, angle, imageSize):
 
     for i in range(imageSize[0]):
         for j in range(imageSize[1]):
-            if matrix[i,j] != 255:
+            if matrix[i,j] != 0:
                 shaperow.append(i)
                 shapecol.append(j)
                 shape.append([i,j,matrix[i,j]])
@@ -61,7 +66,7 @@ def rotate(matrix, angle, imageSize):
     s = np.sin(angle);
     c = np.cos(angle);
 
-    rotatetmatrix = np.full((imageSize[0],imageSize[1]), 255)
+    rotatetmatrix = np.full((imageSize[0],imageSize[1]), 0)
 
     for point in shape:
         # translate point back to origin:
@@ -76,7 +81,7 @@ def rotate(matrix, angle, imageSize):
         point[0] = int(xnew + middlepointrow);
         point[1] = int(ynew + middlepointcol);
 
-        if point[0] < 28 and point[0] >= 0 and point[1] < 28 and point[1] >= 0:
+        if point[0] < imageSize[0] and point[0] >= 0 and point[1] < imageSize[1] and point[1] >= 0:
             rotatetmatrix[point[0],point[1]] = point[2]
 
     return rotatetmatrix;

@@ -30,7 +30,6 @@ def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
         os.makedirs(os.path.join('images', 'ellipses'))
     areas = createArea(margin, imageSize)
     for area in areas:
-        print("I draw an elipse")
         ellipse = Ellipse(area, color, borderWidth, matrixContainer, count)
         count += 1
         ellipse.draw(imageSize)
@@ -44,7 +43,6 @@ def createRectangles(imageSize, margin, color,
         os.makedirs(os.path.join('images', 'rectangles'))
     areas = createArea(margin, imageSize)
     for area in areas:
-        print("I draw a rectangle")
         rectangle = Rectangle(area, color, borderWidth, matrixContainer, count)
         count += 1
         rectangle.draw(imageSize)
@@ -83,7 +81,6 @@ def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
     # there are more then 40 million possible triangles. We choose randomly
     # 200000 of them:
     for _ in range(200000):
-        print("I draw a trinangle")
         # Note that every coordinate is bound by the x coordinate of the first
         # point and the y variable of the second point.
         # Every third corner point is further right than the first point and
