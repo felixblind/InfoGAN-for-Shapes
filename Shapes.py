@@ -172,7 +172,6 @@ class Rectangle:
         self.area = area
         self.imageName = getPath('rectangle', self.area)
         self.matrixContainer = matrixContainer
-        self.count = count
 
     # draw a rectangle in pygame, store it as a file (thats because of pygame), we want actually a matrix
     # so read the picture back in as a matrix, rotate it in the specified angles if wanted and store the original
