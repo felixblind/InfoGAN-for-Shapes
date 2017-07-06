@@ -23,7 +23,7 @@ def createArea(margin, imageSize):
     return areas
 
 def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
-    global count
+
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'ellipses')):
@@ -31,12 +31,10 @@ def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
     areas = createArea(margin, imageSize)
     for area in areas:
         ellipse = Ellipse(area, color, borderWidth, matrixContainer)
-        count += 1
         ellipse.draw(imageSize)
 
 def createRectangles(imageSize, margin, color,
         borderWidth, matrixContainer):
-    global count
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'rectangles')):
@@ -44,7 +42,6 @@ def createRectangles(imageSize, margin, color,
     areas = createArea(margin, imageSize)
     for area in areas:
         rectangle = Rectangle(area, color, borderWidth, matrixContainer)
-        count += 1
         rectangle.draw(imageSize)
 
 def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
@@ -116,12 +113,11 @@ def __main__():
     minHeight = 3
     borderWidth = sys.argv[1]
     black = [0,0,0]
-    global count
-    count = 0
+    rotationAngles = [45]
     matrixContainer = Container()
 
-    createEllipses(imageSize, margin, black, 0, matrixContainer, [45])
-    createRectangles(imageSize, margin, black, 0, matrixContainer, [45])
+    createEllipses(imageSize, margin, black, 0, matrixContainer, rotationAngles)
+    createRectangles(imageSize, margin, black, 0, matrixContainer, rotationAngles)
     createTriangles(imageSize, margin, black, 0, matrixContainer)
     idxPath = os.path.join('MNIST')
     if not os.path.exists(idxPath):
