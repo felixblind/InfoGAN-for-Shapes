@@ -22,7 +22,7 @@ def createArea(margin, imageSize):
                     areas.append([xCoordinate, yCoordinate, width, height])
     return areas
 
-def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
+def createEllipses(imageSize, margin, color, borderWidth, matrixContainer, angles):
 
     if not os.path.exists('images'):
         os.makedirs('images')
@@ -31,10 +31,10 @@ def createEllipses(imageSize, margin, color, borderWidth, matrixContainer):
     areas = createArea(margin, imageSize)
     for area in areas:
         ellipse = Ellipse(area, color, borderWidth, matrixContainer)
-        ellipse.draw(imageSize)
+        ellipse.draw(imageSize, angles)
 
 def createRectangles(imageSize, margin, color,
-        borderWidth, matrixContainer):
+        borderWidth, matrixContainer, angles):
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'rectangles')):
@@ -42,7 +42,7 @@ def createRectangles(imageSize, margin, color,
     areas = createArea(margin, imageSize)
     for area in areas:
         rectangle = Rectangle(area, color, borderWidth, matrixContainer)
-        rectangle.draw(imageSize)
+        rectangle.draw(imageSize, angles)
 
 def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
     if not os.path.exists('images'):

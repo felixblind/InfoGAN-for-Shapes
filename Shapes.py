@@ -14,10 +14,10 @@ def getPath(shape, code):
             str(code) + '.png')
 
 # Convert our matrices with values of 255 (white) and 0 (black) to a matrix with 0 and 1 to use in our neural network
-def convertMatrix(matrix):p
+def convertMatrix(matrix):
      # white is 255, black is 0, the matrices are 8 bit encoded, so modulo 255,
      # so 255 + 1 = 0, 0 + 1 = 1
-     return (matrix + 1) % 256 
+    return (matrix + 1) % 256 
 
 # get a Matrix from our generated pictures
 def getMatrix(imageName):
