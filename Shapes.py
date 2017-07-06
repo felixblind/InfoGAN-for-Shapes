@@ -1,35 +1,40 @@
+'''
+In this file is everything that is needed to set up the Creation of shapes
+'''
+
 import pygame
 import os
 import numpy as np
 from scipy import misc
 
+
+# get the path to our shape image
 def getPath(shape, code):
     return os.path.join('images', shape + 's', shape +
             str(code) + '.png')
 
-def subMatrix(matrix):
+# Convert our matrices with values of 255 (white) and 0 (black) to a matrix with 0 and 1 to use in our neural network
+def convertMatrix(matrix):p
      # white is 255, black is 0, the matrices are 8 bit encoded, so modulo 255,
      # so 255 + 1 = 0, 0 + 1 = 1
-     return matrix + 1
+     return (matrix + 1) % 256 
 
+# get a Matrix from our generated pictures
 def getMatrix(imageName):
 
     imageMatrix = misc.imread(imageName, flatten=True)
-   # imageMatrix = misc.imread(imageName)
-    #imageMatrix = (subMatrix(imageMatrix[:,:,0])/3 +
-     #       subMatrix(imageMatrix[:,:,1])/3 +
-      #      subMatrix(imageMatrix[:,:,2])/3)
-    #print(imageMatrix)
-    matrix = subMatrix(imageMatrix) % 256
+    matrix = convertMatrix(imageMatrix)
 
     return matrix
 
+# check if our shape is big enough and not to lengthy to be distinguishable from the other shapes
 def checkMatrix(matrix, imageSize):
     # for a 28x28 image we want shapes which are bigger than 9 pixels. 28x28/80
     # = 9
     matrixok = False
-    # check if big enough
+    # check if big enough and not entirely full of the shape (every pixel is 1)
     if np.sum(matrix) > ((imageSize[0] * imageSize[1]) / 80) and np.sum(matrix) < (imageSize[0] * imageSize[1]):
+       
         # check if ratio of height to length ok, to rule out super lengthy objects
         shaperow = []
         shapecol = []
@@ -40,16 +45,23 @@ def checkMatrix(matrix, imageSize):
                     shapecol.append(j)
         length = max(shaperow) - min(shaperow)
         height = max(shapecol) - min(shapecol)
+
+        # heigth or length that only consist of only 1 pixel are definitly to small, 
+        # and this would also give problems in Division so rule this out
         if height > 0 and length > 0:
             ratio = length/height
+            # arbitrary ratio
             if ratio < 4 and ratio > 0.25:
                 matrixok = True
     return matrixok
 
+# rotate the shapes, this is not possible in pygame, so we need our own function
+# we do this by rotating every ("colored") point of our matrix aroung the middle
+# point of our shape in a certain angle
 def rotate(matrix, angle, imageSize):
 
     # get middle point of matrix around which we want to rotate the matrix
-
+    # and every point that has a value different from 0 and needs to be rotated
     shaperow = []
     shapecol = []
     shape = []
@@ -63,27 +75,32 @@ def rotate(matrix, angle, imageSize):
     middlepointrow = min(shaperow) + ((max(shaperow) - min(shaperow))/2.)
     middlepointcol = min(shapecol) + ((max(shapecol) - min(shapecol))/2.)
 
+    # get our sinus and cosinus values for the degree in which we want to rotate
     s = np.sin(angle);
     c = np.cos(angle);
 
+    # create a new matrix full of zeros, in which we want to fill in our new rotated shape
     rotatetmatrix = np.full((imageSize[0],imageSize[1]), 0)
 
     for point in shape:
-        # translate point back to origin:
+        # translate point to origin:
         point[0] -= middlepointrow;
         point[1] -= middlepointcol;
 
-        #rotate point
+        #rotate point (trigonometry, peope!)
         xnew = point[0] * c - (point[1] * s);
         ynew = point[0] * s + (point[1] * c);
 
-        #translate point back: (The 0.5 is to round the number and not only cut the decimals off)
+        # translate point back: (The 0.5 is to round the number and not only cut the decimals off)
+        # To prevent pixel-holes in our rotated shape, we "color" four pixels around our rotation-point
+        # (Rotation tells us we would need to put our pixel at [3.4,5.6], that is not possible, so instead
+        #  we put pixels at [3,5],[5,6],[4,5] and [4,6])
         x1 = int(xnew + middlepointrow - 0.5);
         y1 = int(ynew + middlepointcol - 0.5);
         x2 = int(xnew + middlepointrow + 0.5);
         y2 = int(ynew + middlepointcol + 0.5);
-
-        if x1 < imageSize[0] and x1 >= 0 and y1 < imageSize[1] and y1 >= 0 :
+        # Confirm that the new pixel is realy in the picture and than "color it"
+        if x1 < imageSize[0] and x1 >= 0 and y1 < imageSize[1] and y1 >= 0 : 
             rotatetmatrix[x1,y1] = point[2]
         if x2 < imageSize[0] and x2 >= 0 and y2 < imageSize[1] and y2 >= 0:
             rotatetmatrix[x2,y2] = point[2]
@@ -96,15 +113,17 @@ def rotate(matrix, angle, imageSize):
 
 class Ellipse:
 
-    def __init__(self, area, color, borderWidth, matrixContainer, count):
+    def __init__(self, area, color, borderWidth, matrixContainer):
         self.color = color
         self.borderWidth = borderWidth
         self.area = area
         self.imageName = getPath('ellipse', self.area)
         self.matrixContainer = matrixContainer
-        self.count = count
 
-    def draw(self, imageSize):
+    # draw an ellipse in pygame, store it as a file (thats because of pygame), we want actually a matrix
+    # so read the picture back in as a matrix, rotate it in the specified angles if wanted and store the original
+    # as well as every rotated one in our matrixContainer
+    def draw(self, imageSize, angles):
         screen = pygame.display.set_mode(imageSize)
         white = [255,255,255]
         screen.fill(white)
@@ -115,25 +134,11 @@ class Ellipse:
 
             self.matrixContainer.put(imageMatrix, 'ellipse')
 
-            rotate15 = rotate(imageMatrix, 15, imageSize)
-            if checkMatrix(rotate15, imageSize):
-                self.matrixContainer.put(rotate15, 'ellipse')
+            for angle in angles:
+                rotation = rotate(imageMatrix, angle, imageSize)
+                if checkMatrix(rotation, imageSize):
+                    self.matrixContainer.put(rotation, 'ellipse')
 
-            rotate30 = rotate(imageMatrix, 30, imageSize)
-            if checkMatrix(rotate30, imageSize):
-                self.matrixContainer.put(rotate30, 'ellipse')
-
-            rotate45 = rotate(imageMatrix, 45, imageSize)
-            if checkMatrix(rotate45, imageSize):
-                self.matrixContainer.put(rotate45, 'ellipse')
-
-            rotate60 = rotate(imageMatrix, 60, imageSize)
-            if checkMatrix(rotate60, imageSize):
-                self.matrixContainer.put(rotate60, 'ellipse')
-
-            rotate75 = rotate(imageMatrix, 75, imageSize)
-            if checkMatrix(rotate75, imageSize):
-                self.matrixContainer.put(rotate75, 'ellipse')
 
 class Triangle:
 
@@ -144,6 +149,8 @@ class Triangle:
         self.imageName = getPath('triangle', self.pointlist)
         self.matrixContainer = matrixContainer
 
+    # draw a triangle (or rather a polygon, because there are no triangles) in pygame, store it as a file (thats because of pygame), we want actually a matrix
+    # so read the picture back in as a matrix and store it in our matrixContainer
     def draw(self, imageSize):
         screen = pygame.display.set_mode(imageSize)
         white = [255,255,255]
@@ -159,7 +166,7 @@ class Triangle:
 
 class Rectangle:
 
-    def __init__(self, area, color, borderWidth, matrixContainer, count):
+    def __init__(self, area, color, borderWidth, matrixContainer):
         self.color = color
         self.borderWidth = borderWidth
         self.area = area
@@ -167,7 +174,10 @@ class Rectangle:
         self.matrixContainer = matrixContainer
         self.count = count
 
-    def draw(self, imageSize):
+    # draw a rectangle in pygame, store it as a file (thats because of pygame), we want actually a matrix
+    # so read the picture back in as a matrix, rotate it in the specified angles if wanted and store the original
+    # as well as every rotated one in our matrixContainer
+    def draw(self, imageSize, angles):
         screen = pygame.display.set_mode(imageSize)
         white = [255,255,255]
         screen.fill(white)
@@ -178,26 +188,10 @@ class Rectangle:
 
             self.matrixContainer.put(imageMatrix, 'rectangle')
 
-            rotate15 = rotate(imageMatrix, 15, imageSize)
-            if checkMatrix(rotate15, imageSize):
-                self.matrixContainer.put(rotate15, 'rectangle')
-
-            rotate30 = rotate(imageMatrix, 30, imageSize)
-            if checkMatrix(rotate30, imageSize):
-                self.matrixContainer.put(rotate30, 'rectangle')
-
-            rotate45 = rotate(imageMatrix, 45, imageSize)
-            if checkMatrix(rotate45, imageSize):
-                self.matrixContainer.put(rotate45, 'rectangle')
-
-            rotate60 = rotate(imageMatrix, 60, imageSize)
-            if checkMatrix(rotate60, imageSize):
-                self.matrixContainer.put(rotate60, 'rectangle')
-
-            rotate75 = rotate(imageMatrix, 75, imageSize)
-            if checkMatrix(rotate75, imageSize):
-                self.matrixContainer.put(rotate75, 'rectangle')
-            
+            for angle in angles:
+                rotation = rotate(imageMatrix, angle, imageSize)
+                if checkMatrix(rotation, imageSize):
+                    self.matrixContainer.put(rotation, 'rectangle')
 
 
 # class Circle:
