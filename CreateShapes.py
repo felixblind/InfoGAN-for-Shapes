@@ -106,6 +106,105 @@ def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
                         color,borderWidth, matrixContainer)
                     triangle.draw(imageSize)
 
+
+def createRightTriangles(imageSize, margin, color, borderWidth, matrixContainer):
+    if not os.path.exists('images'):
+        os.makedirs('images')
+    if not os.path.exists(os.path.join('images', 'triangles')):
+        os.makedirs(os.path.join('images', 'triangles'))
+
+
+    # there are more then 40 million possible triangles. We choose randomly
+    # 15000 of them:
+    for _ in range(40000):
+        # Draw a diagram.
+
+
+        x1Coordinate = np.random.randint(margin, imageSize[1] - margin)
+        y1Coordinate = np.random.randint(margin, imageSize[0] - margin)
+
+        # Right angle in left upper corner
+        lUy2Coordinate = np.random.randint(y1Coordinate, imageSize[0] - margin)
+        lUx2Coordinate = x1Coordinate
+        lUx3Coordinate = np.random.randint(x1Coordinate, imageSize[1] - margin)
+        lUy3Coordinate = y1Coordinate
+
+        # Right angle in left down corner
+        lDx2Coordinate = x1Coordinate
+        lDy2Coordinate = np.random.randint(y1Coordinate, imageSize[0] - margin)
+        lDx3Coordinate = np.random.randint(lDx2Coordinate, imageSize[1] - margin)
+        lDy3Coordinate = lDy2Coordinate
+
+        # Right angle in right down corner
+        rDx2Coordinate = np.random.randint(x1Coordinate, imageSize[1] - margin)
+        rDy2Coordinate = y1Coordinate
+        rDx3Coordinate = rDx2Coordinate
+        if margin == rDy2Coordinate:
+            rDy3Coordinate = margin
+        else:
+            rDy3Coordinate = np.random.randint(margin, rDy2Coordinate)
+
+        # Right angle in right upper corner
+        rUx2Coordinate = np.random.randint(x1Coordinate, imageSize[1] - margin)
+        rUy2Coordinate = y1Coordinate
+        rUx3Coordinate = rUx2Coordinate
+        rUy3Coordinate = np.random.randint(rUy2Coordinate, imageSize[0] - margin)
+
+        # if three x- or y-coordinates are on a line, the 
+        # triangle would be empty.
+        lUinLine = lUx3Coordinate == x1Coordinate or lUy3Coordinate == lUy2Coordinate
+        lDinLine = lDx3Coordinate == x1Coordinate or lDy3Coordinate == y1Coordinate
+        rDinLine = rDx3Coordinate == x1Coordinate or rDy2Coordinate == rDy3Coordinate
+        rUinLine = rUx3Coordinate == x1Coordinate or rUy2Coordinate == rUy3Coordinate
+
+        if not lUinLine:
+            position1 = [x1Coordinate, y1Coordinate]
+            position2 = [lUx2Coordinate, lUy2Coordinate]
+            position3 = [lUx3Coordinate, lUy3Coordinate]
+            pointlist = [position1, position2, position3]
+            if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
+                str(pointlist) + '.png')):
+
+                    triangle = Triangle(pointlist,
+                        color,borderWidth, matrixContainer)
+                    triangle.draw(imageSize)
+
+        if not lDinLine:
+            position1 = [x1Coordinate, y1Coordinate]
+            position2 = [lDx2Coordinate, lDy2Coordinate]
+            position3 = [lDx3Coordinate, lDy3Coordinate]
+            pointlist = [position1, position2, position3]
+            if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
+                str(pointlist) + '.png')):
+
+                    triangle = Triangle(pointlist,
+                        color,borderWidth, matrixContainer)
+                    triangle.draw(imageSize)
+
+        if not rUinLine:
+            position1 = [x1Coordinate, y1Coordinate]
+            position2 = [rUx2Coordinate, rUy2Coordinate]
+            position3 = [rUx3Coordinate, rUy3Coordinate]
+            pointlist = [position1, position2, position3]
+            if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
+                str(pointlist) + '.png')):
+
+                    triangle = Triangle(pointlist,
+                        color,borderWidth, matrixContainer)
+                    triangle.draw(imageSize)
+
+        if not rDinLine:
+            position1 = [x1Coordinate, y1Coordinate]
+            position2 = [rDx2Coordinate, rDy2Coordinate]
+            position3 = [rDx3Coordinate, rDy3Coordinate]
+            pointlist = [position1, position2, position3]
+            if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
+                str(pointlist) + '.png')):
+
+                    triangle = Triangle(pointlist,
+                        color,borderWidth, matrixContainer)
+                    triangle.draw(imageSize)
+
 def __main__():
     imageSize = [28,28]
     margin = 1
