@@ -163,6 +163,9 @@ class InfoGANTrainer(object):
                     cat_ids.extend([idx] * 10)
                 cat_ids.extend([0] * (self.batch_size - 100))
                 cur_cat = np.copy(fixed_cat)
+                print(cat_ids)
+                print(lookup[cat_ids][1])
+                print(dist.dim)
                 cur_cat[:, offset:offset+dist.dim] = lookup[cat_ids]
                 offset += dist.dim
             elif isinstance(dist, Bernoulli):

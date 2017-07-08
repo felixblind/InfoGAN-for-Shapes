@@ -24,7 +24,7 @@ if __name__ == "__main__":
     root_checkpoint_dir = "ckt/shape"
     batch_size = 128
     updates_per_epoch = 100
-    max_epoch = 50
+    max_epoch = 100
 
     exp_name = "shape_%s" % timestamp
 
@@ -41,12 +41,12 @@ if __name__ == "__main__":
     testMatrixSample = np.array(liste[2])
     testLabelsSample = np.array(liste[3])
 
+    print(len(trainMatrixSample), len(trainMatrixSample[0]))
     dataset = ShapeDataset(trainMatrixSample, trainLabelsSample)
 
 
     latent_spec = [
         (Uniform(62), False),
-        (Categorical(10), True),
         (Uniform(1, fix_std=True), True),
         (Uniform(1, fix_std=True), True),
     ]
