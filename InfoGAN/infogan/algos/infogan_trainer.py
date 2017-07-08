@@ -138,10 +138,10 @@ class InfoGANTrainer(object):
             ], axis=0)
             fixed_cat = np.concatenate([
                 np.tile(
-                    self.model.reg_latent_dist.sample_prior(3).eval(),
-                    [3, 1]
+                    self.model.reg_latent_dist.sample_prior(10).eval(),
+                    [10, 1]
                 ),
-                self.model.reg_latent_dist.sample_prior(self.batch_size - 9).eval(),
+                self.model.reg_latent_dist.sample_prior(self.batch_size - 100).eval(),
             ], axis=0)
 
         offset = 0
@@ -159,9 +159,9 @@ class InfoGANTrainer(object):
             elif isinstance(dist, Categorical):
                 lookup = np.eye(dist.dim, dtype=np.float32)
                 cat_ids = []
-                for idx in xrange(3):
-                    cat_ids.extend([idx] * 3)
-                cat_ids.extend([0] * (self.batch_size - 9))
+                for idx in xrange(10):
+                    cat_ids.extend([idx] * 10)
+                cat_ids.extend([0] * (self.batch_size - 100))
                 cur_cat = np.copy(fixed_cat)
                 print(cat_ids)
                 print(lookup[cat_ids][1])
@@ -193,7 +193,7 @@ class InfoGANTrainer(object):
             else:
                 raise NotImplementedError
             img_var = self.dataset.inverse_transform(img_var)
-            rows = 3
+            rows = 10
             img_var = tf.reshape(img_var, [self.batch_size] + list(self.dataset.image_shape))
             img_var = img_var[:rows * rows, :, :, :]
             imgs = tf.reshape(img_var, [rows, rows] + list(self.dataset.image_shape))
