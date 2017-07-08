@@ -55,6 +55,48 @@ def checkMatrix(matrix, imageSize):
                 matrixok = True
     return matrixok
 
+# check if our shape is big enough and not to lengthy to be distingusihable from the other shapes
+# and check if our shape is in the middle of the picture
+def checkMatrixAndMiddle(matrix, imageSize):
+    # for a 28x28 image we want shapes which are bigger than 9 pixels. 28x28/80
+    # = 9
+    matrixok = False
+    # check if big enough and not entirely full of the shape (every pixel is 1)
+    if np.sum(matrix) > ((imageSize[0] * imageSize[1]) / 80) and np.sum(matrix) < (imageSize[0] * imageSize[1]):
+       
+        # check if ratio of height to length ok, to rule out super lengthy objects
+        shaperow = []
+        shapecol = []
+        shape = []
+
+        for i in range(imageSize[0]):
+            for j in range(imageSize[1]):
+                if matrix[i,j] != 0:
+                    shaperow.append(i)
+                    shapecol.append(j)
+                    shape.append([i,j,matrix[i,j]])
+        middlepointrow = min(shaperow) + ((max(shaperow) - min(shaperow))/2.)
+        middlepointcol = min(shapecol) + ((max(shapecol) - min(shapecol))/2.)
+        length = max(shaperow) - min(shaperow)
+        height = max(shapecol) - min(shapecol)
+
+        # Define a Area in the middle of the picture in which the middle point of the shape should lie
+        middleAreaRowLow = (imageSize[0]/2.) - (imageSize[0]/14.)
+        middleAreaRowHigh = (imageSize[0]/2.) + (imageSize[0]/14.)
+        middleAreaColLow = (imageSize[1]/2.) - (imageSize[1]/14.)
+        middleAreaColHigh = (imageSize[1]/2.) + (imageSize[1]/14.)
+
+        # heigth or length that only consist of only 1 pixel are definitly to small, 
+        # and this would also give problems in Division so rule this out
+        if height > 0 and length > 0 and middlepointrow >= middleAreaRowLow and middlepointrow <= middleAreaRowHigh and middlepointcol >= middleAreaColLow and middlepointcol <= middleAreaRowHigh:
+            ratio = length/height
+            # arbitrary ratio
+            if ratio < 4 and ratio > 0.25:
+                matrixok = True
+
+
+    return matrixok
+
 # rotate the shapes, this is not possible in pygame, so we need our own function
 # we do this by rotating every ("colored") point of our matrix aroung the middle
 # point of our shape in a certain angle
@@ -130,13 +172,13 @@ class Ellipse:
         pygame.draw.ellipse(screen, self.color, self.area, self.borderWidth)
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
-        if checkMatrix(imageMatrix, imageSize):
+        if checkMatrixAndMiddle(imageMatrix, imageSize):
 
             self.matrixContainer.put(imageMatrix, 'ellipse')
 
             for angle in angles:
                 rotation = rotate(imageMatrix, angle, imageSize)
-                if checkMatrix(rotation, imageSize):
+                if checkMatrixAndMiddle(rotation, imageSize):
                     self.matrixContainer.put(rotation, 'ellipse')
 
 
@@ -158,7 +200,7 @@ class Triangle:
         pygame.draw.polygon(screen, self.color, self.pointlist, self.borderWidth)
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
-        if checkMatrix(imageMatrix, imageSize):
+        if checkMatrixAndMiddle(imageMatrix, imageSize):
 
             self.matrixContainer.put(imageMatrix, 'triangle')
 
@@ -183,13 +225,13 @@ class Rectangle:
         pygame.draw.rect(screen, self.color, self.area, self.borderWidth)
         pygame.image.save(screen, self.imageName)
         imageMatrix = getMatrix(self.imageName)
-        if checkMatrix(imageMatrix, imageSize):
+        if checkMatrixAndMiddle(imageMatrix, imageSize):
 
             self.matrixContainer.put(imageMatrix, 'rectangle')
 
             for angle in angles:
                 rotation = rotate(imageMatrix, angle, imageSize)
-                if checkMatrix(rotation, imageSize):
+                if checkMatrixAndMiddle(rotation, imageSize):
                     self.matrixContainer.put(rotation, 'rectangle')
 
 
