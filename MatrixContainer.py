@@ -1,4 +1,3 @@
-import idx2numpy
 import os
 import numpy as np
 import pickle
@@ -71,8 +70,3 @@ class Container:
             testLabelsSample], open('InfoGAN/images.pkl', 'wb'), protocol=2)
 
 
-
-        # idx2numpy.convert_to_file(trainImagePath, np.array(trainMatrixSample))
-        # idx2numpy.convert_to_file(trainLabelsPath, np.array(trainLabelsSample))
-        # idx2numpy.convert_to_file(testImagePath, np.array(trainMatrixSample))
-        # idx2numpy.convert_to_file(testLabelsPath, np.array(testLabelsSample))

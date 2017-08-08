@@ -17,11 +17,14 @@ import pickle
 
 if __name__ == "__main__":
 
+    # the date is needed for the logs
     now = datetime.datetime.now(dateutil.tz.tzlocal())
     timestamp = now.strftime('%Y_%m_%d_%H_%M_%S')
 
     root_log_dir = "logs/shape"
     root_checkpoint_dir = "ckt/shape"
+
+    # Batch-size and epochs to be used
     batch_size = 128
     updates_per_epoch = 100
     max_epoch = 100
@@ -34,17 +37,24 @@ if __name__ == "__main__":
     mkdir_p(log_dir)
     mkdir_p(checkpoint_dir)
 
+    # load the shape-data
     liste = pickle.load(open('images.pkl', 'rb'))
 
     trainMatrixSample = np.array(liste[0])
     trainLabelsSample = np.array(liste[1])
-    testMatrixSample = np.array(liste[2])
-    testLabelsSample = np.array(liste[3])
+    testMatrixSample = np.array(liste[2])   # currently not used
+    testLabelsSample = np.array(liste[3])   # currently not used
 
     print(len(trainMatrixSample), len(trainMatrixSample[0]))
+    # ShapeDataset has a fixed height and widht of 28 pixels and only one 
+    # matrix per image (grey-scale)
     dataset = ShapeDataset(trainMatrixSample, trainLabelsSample)
 
 
+    # the variables used for the generation of shapes
+    # Uniform variables are only supported with a value of 1
+    # Possible would be also e.g. Categorical(10), True) for 
+    # a categorical variable with 10 Steps.
     latent_spec = [
         (Uniform(62), False),
         (Uniform(1, fix_std=True), True),

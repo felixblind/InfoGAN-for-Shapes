@@ -210,7 +210,7 @@ def __main__():
     margin = 1
     minWidth = 3
     minHeight = 3
-    borderWidth = sys.argv[1]
+    #borderWidth = sys.argv[1]
     black = [0,0,0]
     rotationAngles = []
     matrixContainer = Container()
@@ -218,6 +218,7 @@ def __main__():
     createEllipses(imageSize, margin, black, 0, matrixContainer, rotationAngles)
     createRectangles(imageSize, margin, black, 0, matrixContainer, rotationAngles)
     createRightTriangles(imageSize, margin, black, 0, matrixContainer)
+    # createTriangles(imageSize, margin, black, 0, matrixContainer)
     idxPath = os.path.join('MNIST')
     if not os.path.exists(idxPath):
         os.makedirs(idxPath)

@@ -39,7 +39,7 @@ def checkMatrix(matrix, imageSize):
         shaperow = []
         shapecol = []
         for i in range(imageSize[0]):
-            for j in range(imageSize[1]):
+            for j in range(imageSize[1:]):
                 if matrix[i,j] != 0:
                     shaperow.append(i)
                     shapecol.append(j)
