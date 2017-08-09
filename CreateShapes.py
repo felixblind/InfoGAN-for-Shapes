@@ -5,8 +5,12 @@ import numpy as np
 from Shapes import Ellipse, Rectangle, Triangle
 from MatrixContainer import Container
 
-
 def createArea(margin, imageSize):
+    """
+    This method just goes through a all possible combinations of position
+    and length of sides and gives back all these combination encoded as
+    coordinates and height and width.
+    """
     areas = []
     # height or width 0 would lead to no shape. The ellipse should not be
     # higher than the height of the image without the margin on both sides.
@@ -15,15 +19,18 @@ def createArea(margin, imageSize):
     # The addition of 1 at the end is because of the range function.
     for yCoordinate in range(margin, imageSize[0] - 2 * margin + 1):
         for xCoordinate in range(margin, imageSize[1] - 2 * margin + 1):
-            # for height in range(minHeight + margin, imageSize[0] - yCoordinate + 1):
             for height in range(margin, imageSize[0] - yCoordinate + 1):
-                # for width in range(minWidth + margin, imageSize[1] - xCoordinate + 1):
                 for width in range(margin, imageSize[1] - xCoordinate + 1):
                     areas.append([xCoordinate, yCoordinate, width, height])
     return areas
 
 def createEllipses(imageSize, margin, color, borderWidth, matrixContainer, angles):
-
+    """
+    This method just just takes parameters to first create an instance of the
+    Ellipse class and than use the draw function.
+    The function of pygame to create Ellipses takes an area the same as for
+    Rectangles.
+    """
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'ellipses')):
@@ -35,6 +42,10 @@ def createEllipses(imageSize, margin, color, borderWidth, matrixContainer, angle
 
 def createRectangles(imageSize, margin, color,
         borderWidth, matrixContainer, angles):
+    """
+    This method just just takes parameters to first create an instance of the
+    Rectangle class and than use the draw function.
+    """
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'rectangles')):
@@ -45,38 +56,19 @@ def createRectangles(imageSize, margin, color,
         rectangle.draw(imageSize, angles)
 
 def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
+    """
+    The method creates image files of triangles with pygame.
+    Different from the more complicated createRightTriangles method this 
+    method only checks if the coordinates of the triangles are in line
+    and therefore if the triangle would be empty.
+    Within the bounds of the starting parameters the parameters to use are
+    selected by random so that the triangles are not reaching out of the
+    border of the image.
+    """
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'triangles')):
         os.makedirs(os.path.join('images', 'triangles'))
-    # # All three points just have to be somewhere within the margin
-    # for y1Coordinate in range(margin, imageSize[0] - margin + 1):
-    #     for x1Coordinate in range(margin, imageSize[1] - margin + 1):
-    #         for y2Coordinate in range(margin, imageSize[0] - margin + 1):
-    #             for x2Coordinate in range(margin, imageSize[1] - margin + 1):
-    #                 for y3Coordinate in range(margin, imageSize[0] - margin + 1):
-    #                     for x3Coordinate in range(margin, imageSize[1] - margin + 1):
-
-    #                         # if three x- or y-coordinates are on a line, the 
-    #                         # triangle would be empty.
-    #                         inLine = abs(x1Coordinate - x2Coordinate) == abs(x2Coordinate - x3Coordinate)
-    #                         inLine = inLine or (abs(y1Coordinate -
-    #                             y2Coordinate) ==abs(y2Coordinate -                                     y3Coordinate))
-    #                         if not inLine:
-    #                             position1 = [x1Coordinate, y1Coordinate]
-    #                             position2 = [x2Coordinate, y2Coordinate]
-    #                             position3 = [x3Coordinate, y3Coordinate]
-    #                             pointlist = [position1, position2, position3]
-
-    #                             triangle = Triangle(pointlist,
-    #                                 color,borderWidth)
-    #                             triangle.draw(imageSize)
-
-                            # if three x- or y-coordinates are on a line, the 
-                            # triangle would be empty.
-
-    # there are more then 40 million possible triangles. We choose randomly
-    # 200000 of them:
     for _ in range(200000):
         # Note that every coordinate is bound by the x coordinate of the first
         # point and the y variable of the second point.
@@ -101,24 +93,28 @@ def createTriangles(imageSize, margin, color, borderWidth, matrixContainer):
             pointlist = [position1, position2, position3]
             if not os.path.exists(os.path.join('images', 'triangles', 'triangle' +
                 str(pointlist) + '.png')):
-
                     triangle = Triangle(pointlist,
-                        color,borderWidth, matrixContainer)
+                        color, borderWidth, matrixContainer)
                     triangle.draw(imageSize)
 
 
 def createRightTriangles(imageSize, margin, color, borderWidth, matrixContainer):
+    """
+    The method creates image files of triangles with pygame.
+    Different from the plain createTriangles method this method creates
+    right triangles aligned with the corners of the image by checking if
+    they are on horizontal or vertical lines in addition to if all the 
+    points are on one line and the triangles therefore empty.
+    Within the bounds of the starting parameters the parameters to use are
+    selected by random so that the triangles are not reaching out of the
+    border of the image.
+    """
     if not os.path.exists('images'):
         os.makedirs('images')
     if not os.path.exists(os.path.join('images', 'triangles')):
         os.makedirs(os.path.join('images', 'triangles'))
 
-
-    # there are more then 40 million possible triangles. We choose randomly
-    # 15000 of them:
     for _ in range(40000):
-        # Draw a diagram.
-
 
         x1Coordinate = np.random.randint(margin, imageSize[1] - margin)
         y1Coordinate = np.random.randint(margin, imageSize[0] - margin)
@@ -206,11 +202,18 @@ def createRightTriangles(imageSize, margin, color, borderWidth, matrixContainer)
                     triangle.draw(imageSize)
 
 def __main__():
-    imageSize = [28,28]
+    """
+    declaration of parameters for the creation of an image of pixels on a white
+    screen. The image is created by pygame which is executed in the methods
+    createRectangles, createRightTriangles, and createEllipses and quit in main
+    to close the little pygame window on the desktop screen.
+    The user can choose between to methods of creating triangles. One which 
+    only checks if the triangles are empty
+    """
+    imageSize = [28, 28]
     margin = 1
     minWidth = 3
     minHeight = 3
-    #borderWidth = sys.argv[1]
     black = [0,0,0]
     rotationAngles = []
     matrixContainer = Container()
