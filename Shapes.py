@@ -183,7 +183,6 @@ class Ellipse:
 
 
 class Triangle:
-
     def __init__(self, pointlist, color, borderWidth, matrixContainer):
         self.color = color
         self.borderWidth = borderWidth
@@ -207,7 +206,6 @@ class Triangle:
             
 
 class Rectangle:
-
     def __init__(self, area, color, borderWidth, matrixContainer):
         self.color = color
         self.borderWidth = borderWidth
@@ -220,7 +218,7 @@ class Rectangle:
     # as well as every rotated one in our matrixContainer
     def draw(self, imageSize, angles):
         screen = pygame.display.set_mode(imageSize)
-        white = [255,255,255]
+        white = [255, 255, 255]
         screen.fill(white)
         pygame.draw.rect(screen, self.color, self.area, self.borderWidth)
         pygame.image.save(screen, self.imageName)
@@ -233,26 +231,3 @@ class Rectangle:
                 rotation = rotate(imageMatrix, angle, imageSize)
                 if checkMatrixAndMiddle(rotation, imageSize):
                     self.matrixContainer.put(rotation, 'rectangle')
-
-
-# class Circle:
-
-#     def __init__(self, imageSize, color, borderWidth, margin):
-#         self.color = color
-#         self.borderWidth = borderWidth
-#         # radius 0 would lead to no shape. The circle has to fit on the smaller
-#         # side of the image, therefor 'min'. Twice the radius should not be
-#         # bigger than the size of the smaller side of the image without the
-#         # margins on both sites.
-#         smallerSide = min(imageSize[0], imageSize[1])
-#         self.radius = np.random.randint(1,  int(smallerSide - 2 * margin) / 2)
-#         # The y-Coordinate of the middle point should be at least as far from
-#         # each border as the radius + margin
-#         yCoordinate = np.random.randint(margin + radius, imageSize[0] - margin
-#                 - radius)
-#         xCoordinate = np.random.randint(margin + radius, imageSize[1] - margin
-#                 - radius)
-#         self.position = [xCoordinate, yCoordinate]
-
-#     def draw(self, screen):
-#         pygame.draw.circle(screen, self.color, self.position, self.radius, self.borderWidth)

@@ -3,6 +3,9 @@ import numpy as np
 import pickle
 
 class Container:
+    """
+    This is a container class for 
+    """
     def __init__(self):
         self.rectangles = []
         self.ellipses = []
