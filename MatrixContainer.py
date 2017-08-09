@@ -4,7 +4,7 @@ import pickle
 
 class Container:
     """
-    This is a container class for 
+    This container only stores rectangles, ellipsis, triangles separately.
     """
     def __init__(self):
         self.rectangles = []

@@ -154,7 +154,6 @@ def rotate(matrix, angle, imageSize):
     return rotatetmatrix;
 
 class Ellipse:
-
     def __init__(self, area, color, borderWidth, matrixContainer):
         self.color = color
         self.borderWidth = borderWidth
