@@ -10,7 +10,7 @@ $ `git clone https://github.com/felixblind/labrotation-ai.git`
 * pip
 * an old version of prettytensor, this will install a new version of tensorflow, so be sure to do this before you install the the old version of tensorflow). You can run:
 
-$ `export PT_BINARY_URL=https://pypi.python.org/packages/73/3a/e0f1b3fa2623bf3df7fd106dd82d06502e4926c0c2389d41350cd967e31c/prettytensor-0.6.2-py2-none-any.whl#md5=369d16653bf378e62d933552f5b9dcb8`                   
+$ `export PT_BINARY_URL=https://pypi.python.org/packages/73/3a/e0f1b3fa2623bf3df7fd106dd82d06502e4926c0c2389d41350cd967e31c/prettytensor-0.6.2-py2-none-any.whl#md5=369d16653bf378e62d933552f5b9dcb8`                       
 $ `sudo pip install --upgrade $PT_BINARY_URL`
 
 * progressbar:
@@ -35,7 +35,8 @@ $ `pip install Pillow`
 
 * Tensorflow 0.9.0, (first install prettytensor!) to get this specific version if you are on Linux you can run:
 		
-$ `export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl`                  $ `sudo pip install --upgrade $TF_BINARY_URL`
+$ `export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/cpu/tensorflow-0.9.0-cp27-none-linux_x86_64.whl`               
+$ `sudo pip install --upgrade $TF_BINARY_URL`
 
 ## Run our version
 The file image.pkl that is used for InfoGAN and currently in the github repository contains not rotated shapes, only right triangles and only shapes that are somewhere in the middle of the images. To simply run this version with 100 Epochs and two uniform variables, go into your InfoGAN directory and run:
