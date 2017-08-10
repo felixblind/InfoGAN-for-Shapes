@@ -55,9 +55,9 @@ $ `python CreateShapes.py`
 you can switch to the InfoGAN directory and run the aforementioned commands.
 
 Currently supported shape options are:
-1. Rotation of rectangles and ellipses in specified angles
-2. Only using shapes that originate somewhere in the middle of the image or all shapes
-3. Using right triangles or use all triangles
+* Rotation of rectangles and ellipses in specified angles
+* Only using shapes that originate somewhere in the middle of the image or all shapes
+* Using right triangles or use all triangles
 
 1. To change rotation of rectangles and ellipses open labrotation-ai/CreateShapes.py and go to the main method (at the end of the script). The variable “rotationAngles” needs a list of all angles in which the shapes should be rotated. Be sure to only use angles up to 90°, as the shapes already exist in 90°, 180° and 270° rotation and those will also be rotated. Example: To rotate the shapes in 15°-Steps the “rotationAngles” should be [15,30,45,60,75].
 
